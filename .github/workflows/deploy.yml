@@ -1,0 +1,30 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload static files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./  # 这里代表把整个项目根目录当作静态页面
+
+      - name: Deploy
+        uses: actions/deploy-pages@v4
