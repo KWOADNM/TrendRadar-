@@ -1,10 +1,11 @@
-name: Deploy to GitHub Pages
+name: Deploy Generated Site to GitHub Pages
 
+# 当抓取脚本 workflow 运行完成后触发
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Hot News Crawler"]
+    types:
+      - completed
 
 permissions:
   contents: write
@@ -13,7 +14,9 @@ permissions:
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,7 +27,7 @@ jobs:
       - name: Upload static files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./  # 这里代表把整个项目根目录当作静态页面
+          path: ./output  # 重点！只上传抓取生成的网页
 
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
