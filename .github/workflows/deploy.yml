@@ -27,7 +27,7 @@ jobs:
       - name: Upload static files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./output  # 重点！只上传抓取生成的网页
+          path: ./  # 重点！只上传抓取生成的网页
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
